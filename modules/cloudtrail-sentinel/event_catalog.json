@@ -1,0 +1,24 @@
+{
+  "alb": {
+    "event_source": "elasticloadbalancing.amazonaws.com",
+    "arn_field": "requestParameters.loadBalancerArn",
+    "destructive": [
+      "DeleteLoadBalancer",
+      "DeleteListener",
+      "DeleteRule",
+      "DeleteTargetGroup",
+      "DeregisterTargets"
+    ],
+    "modify": [
+      "ModifyListener",
+      "ModifyRule",
+      "ModifyLoadBalancerAttributes",
+      "ModifyTargetGroup",
+      "ModifyTargetGroupAttributes",
+      "SetRulePriorities",
+      "RemoveListenerCertificates",
+      "SetSecurityGroups",
+      "SetSubnets"
+    ]
+  }
+}
