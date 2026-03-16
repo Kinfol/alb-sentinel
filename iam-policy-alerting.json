@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudTrail",
+      "Effect": "Allow",
+      "Action": [ "cloudtrail:*" ],
+      "Resource": "arn:aws:cloudtrail:${AWS_REGION}:${AWS_ACCOUNT_ID}:trail/alb-protection-*"
+    },
+    {
+      "Sid": "CloudTrailLookup",
+      "Effect": "Allow",
+      "Action": [ "cloudtrail:LookupEvents", "cloudtrail:DescribeTrails" ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchLogs",
+      "Effect": "Allow",
+      "Action": [ "logs:*" ],
+      "Resource": [
+        "arn:aws:logs:${AWS_REGION}:${AWS_ACCOUNT_ID}:log-group:/cloudtrail/alb-protection-*",
+        "arn:aws:logs:${AWS_REGION}:${AWS_ACCOUNT_ID}:log-group::log-stream:"
+      ]
+    },
+    {
+      "Sid": "CloudWatchAlarms",
+      "Effect": "Allow",
+      "Action": [ "cloudwatch:PutMetricAlarm", "cloudwatch:DeleteAlarms",
+                   "cloudwatch:DescribeAlarms", "cloudwatch:TagResource",
+                   "cloudwatch:UntagResource", "cloudwatch:ListTagsForResource" ],
+      "Resource": "arn:aws:cloudwatch:${AWS_REGION}:${AWS_ACCOUNT_ID}:alarm:alb-protection-*"
+    },
+    {
+      "Sid": "CloudWatchAlarmsRead",
+      "Effect": "Allow",
+      "Action": [ "cloudwatch:DescribeAlarms" ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SNS",
+      "Effect": "Allow",
+      "Action": [ "sns:*" ],
+      "Resource": "arn:aws:sns:${AWS_REGION}:${AWS_ACCOUNT_ID}:alb-protection-*"
+    },
+    {
+      "Sid": "IAM",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateRole", "iam:DeleteRole", "iam:GetRole", "iam:TagRole", "iam:UntagRole",
+        "iam:PutRolePolicy", "iam:DeleteRolePolicy", "iam:GetRolePolicy",
+        "iam:ListRolePolicies", "iam:ListAttachedRolePolicies",
+        "iam:ListInstanceProfilesForRole", "iam:PassRole",
+        "iam:CreatePolicy", "iam:DeletePolicy", "iam:GetPolicy",
+        "iam:CreatePolicyVersion", "iam:DeletePolicyVersion", "iam:GetPolicyVersion",
+        "iam:ListPolicyVersions", "iam:ListEntitiesForPolicy",
+        "iam:CreateGroup", "iam:DeleteGroup", "iam:GetGroup",
+        "iam:AttachGroupPolicy", "iam:DetachGroupPolicy",
+        "iam:ListAttachedGroupPolicies", "iam:ListGroupPolicies",
+        "iam:TagPolicy", "iam:UntagPolicy"
+      ],
+      "Resource": [
+        "arn:aws:iam::${AWS_ACCOUNT_ID}:role/alb-protection-*",
+        "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/alb-protection-*",
+        "arn:aws:iam::${AWS_ACCOUNT_ID}:group/alb-protection-*"
+      ]
+    }
+  ]
+}
