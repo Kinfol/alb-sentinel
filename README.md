@@ -21,3 +21,7 @@ Provision and monitor an ALB with CloudTrail-based alerting using Terragrunt.
 | `make alb-dns` | Get the ALB DNS name |
 | `make auth-check` | Verify AWS CLI and credentials |
 | `make help` | Show help |
+
+## Email Notifications
+
+After running `make apply`, AWS SNS will send a subscription confirmation email to each address listed in `notification_channels.email_addresses`. You must click the confirmation link in that email before alerts will be delivered.

@@ -34,10 +34,10 @@ inputs = {
 
   # Route alerts to multiple channels simultaneously
   notification_channels = {
-    email_addresses    = ["oncall@acme.com", "platform-team@acme.com"]
-    slack_webhook_url  = "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX"
-    pagerduty_endpoint = "https://events.pagerduty.com/integration/abc123def456/enqueue"
-    https_endpoints    = ["https://opsgenie.example.com/v1/json/cloudwatch?apiKey=xxxx"]
+    email_addresses    = ["cristiancushon@gmail.com"]
+    slack_webhook_url  = ""
+    pagerduty_endpoint = ""
+    https_endpoints    = []
   }
 
   log_retention_days = 30

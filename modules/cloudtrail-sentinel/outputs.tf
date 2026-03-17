@@ -27,7 +27,7 @@ output "lambda_function_arn" {
   value       = local.enable_slack ? aws_lambda_function.slack_forwarder[0].arn : ""
 }
 
-output "metric_filter_pattern" {
-  description = "The generated CloudWatch metric filter pattern (for debugging)"
-  value       = local.metric_filter_pattern
+output "metric_filter_patterns" {
+  description = "The generated CloudWatch metric filter patterns (for debugging)"
+  value       = local.filter_patterns
 }

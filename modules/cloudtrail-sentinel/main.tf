@@ -228,9 +228,10 @@ resource "aws_sns_topic_subscription" "slack" {
 # --- CloudWatch Metric Filter — dynamic from catalog ----------------------
 
 resource "aws_cloudwatch_log_metric_filter" "sentinel" {
-  name           = "${var.name_prefix}-sentinel-filter"
+  for_each       = local.filter_patterns
+  name           = "${var.name_prefix}-sentinel-filter-${each.key}"
   log_group_name = aws_cloudwatch_log_group.cloudtrail.name
-  pattern        = local.metric_filter_pattern
+  pattern        = each.value
 
   metric_transformation {
     name          = "SentinelTrackedEvents"

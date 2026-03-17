@@ -48,7 +48,15 @@ locals {
     ]
   ])
 
-  metric_filter_pattern = "{ ${join(" || ", local.filter_clauses)} }"
+  # CloudWatch metric filter patterns have a 1024-char limit.
+  # If the combined pattern fits, use one filter. Otherwise, one filter per clause.
+  _combined_pattern = length(local.filter_clauses) > 0 ? "{ ${join(" || ", local.filter_clauses)} }" : ""
+
+  filter_patterns = (
+    length(local._combined_pattern) <= 1024
+    ? { "0" = local._combined_pattern }
+    : { for i, clause in local.filter_clauses : tostring(i) => "{ ${clause} }" }
+  )
 
   # Notification channel flags
   enable_slack = var.notification_channels.slack_webhook_url != ""
