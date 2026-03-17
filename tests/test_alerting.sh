@@ -199,13 +199,32 @@ else
   pass "SetRulePriorities succeeded — alert should fire within 1-5 minutes"
 fi
 
-# Trigger 5: DeleteRule happens automatically via the cleanup trap
+###############################################################################
+# Trigger 5: ModifyLoadBalancerAttributes — idle timeout (harmless)
+###############################################################################
+echo ""
+echo "--- Step 7: ModifyLoadBalancerAttributes idle_timeout (trigger 5 — SHOULD fire alert) ---"
+
+MODIFY_TIMEOUT_RESULT=$(aws elbv2 modify-load-balancer-attributes \
+  --load-balancer-arn "${ALB_ARN}" \
+  --attributes "Key=idle_timeout.timeout_seconds,Value=60" \
+  --region "${AWS_REGION}" \
+  --query 'Attributes[0].Key' \
+  --output text 2>/dev/null || echo "error")
+
+if [[ "$MODIFY_TIMEOUT_RESULT" == "error" ]]; then
+  fail "ModifyLoadBalancerAttributes (idle_timeout) API call failed"
+else
+  pass "ModifyLoadBalancerAttributes (idle_timeout) succeeded — alert should fire within 1-5 minutes"
+fi
+
+# Trigger 6: DeleteRule happens automatically via the cleanup trap
 
 ###############################################################################
 # Verify the alarm exists and check its state
 ###############################################################################
 echo ""
-echo "--- Step 7: Verify CloudWatch alarm state ---"
+echo "--- Step 8: Verify CloudWatch alarm state ---"
 
 ALARM_PREFIX="${ALARM_PREFIX:-alb-protection}"
 ALARM_NAME=$(aws cloudwatch describe-alarms \
@@ -240,9 +259,10 @@ echo ""
 echo "API calls made (each should appear in CloudTrail within ~5 min):"
 echo "  1. CreateRule         — new rule created"
 echo "  2. ModifyRule         — rule condition changed"
-echo "  3. ModifyLoadBalancerAttributes — ALB attributes toggled"
+echo "  3. ModifyLoadBalancerAttributes — ALB access_logs toggled"
 echo "  4. SetRulePriorities  — rule priority changed"
-echo "  5. DeleteRule         — test rule cleaned up (runs on exit)"
+echo "  5. ModifyLoadBalancerAttributes — idle_timeout set to 60s"
+echo "  6. DeleteRule         — test rule cleaned up (runs on exit)"
 echo ""
 echo "To verify alerts fired:"
 echo "  1. Check your SNS-subscribed email inbox"
